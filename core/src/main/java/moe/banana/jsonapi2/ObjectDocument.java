@@ -23,8 +23,8 @@ public class ObjectDocument<DATA extends ResourceIdentifier> extends Document {
 
     public void set(DATA data) {
         this.hasData = true;
-        bindDocument(null, this.data);
-        bindDocument(this, data);
+        bindDocument(null, this.data, -1);
+        bindDocument(this, data, -1);
         this.data = data;
     }
 

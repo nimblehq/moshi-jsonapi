@@ -16,6 +16,7 @@ public class ResourceIdentifier implements Serializable {
     private String type;
     private String id;
     private JsonBuffer meta;
+    private int index;
 
     public ResourceIdentifier() {
         this(null, null);
@@ -70,6 +71,14 @@ public class ResourceIdentifier implements Serializable {
 
     public void setMeta(JsonBuffer meta) {
         this.meta = meta;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     @Override
