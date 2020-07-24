@@ -11,6 +11,7 @@ public abstract class Document implements Serializable {
     private JsonBuffer meta;
     private JsonBuffer links;
     private JsonBuffer jsonApi;
+    private int indexCount = 0;
 
     public Document() {
     }
@@ -71,7 +72,8 @@ public abstract class Document implements Serializable {
 
             @Override
             public boolean add(Resource resource) {
-                bindDocument(Document.this, resource);
+                bindDocument(Document.this, resource, indexCount);
+                indexCount++;
                 included.put(new ResourceIdentifier(resource), resource);
                 return true;
             }
@@ -80,7 +82,7 @@ public abstract class Document implements Serializable {
             public boolean remove(Object o) {
                 if (o instanceof ResourceIdentifier) {
                     Resource resource = included.remove(new ResourceIdentifier(((ResourceIdentifier) o)));
-                    bindDocument(null, resource);
+                    bindDocument(null, resource, -1);
                     return resource != null;
                 }
                 return false;
@@ -115,6 +117,7 @@ public abstract class Document implements Serializable {
             @Override
             public void clear() {
                 bindDocument(null, included.values());
+                indexCount = 0;
                 included.clear();
             }
         };
@@ -240,15 +243,16 @@ public abstract class Document implements Serializable {
         return result;
     }
 
-    static void bindDocument(Document document, Object resource) {
+    static void bindDocument(Document document, Object resource, int index) {
         if (resource instanceof ResourceIdentifier) {
             ((ResourceIdentifier) resource).setDocument(document);
+            ((ResourceIdentifier) resource).setIndex(index);
         }
     }
 
     static void bindDocument(Document document, Collection<?> resources) {
         for (Object i : resources) {
-            bindDocument(document, i);
+            bindDocument(document, i, -1);
         }
     }
 }

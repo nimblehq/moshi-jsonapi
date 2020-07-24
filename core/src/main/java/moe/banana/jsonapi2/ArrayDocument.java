@@ -16,7 +16,7 @@ public class ArrayDocument<DATA extends ResourceIdentifier> extends Document imp
 
     public boolean add(DATA element) {
         if (data.add(element)) {
-            bindDocument(this, element);
+            bindDocument(this, element, -1);
             return true;
         }
         return false;
@@ -25,7 +25,7 @@ public class ArrayDocument<DATA extends ResourceIdentifier> extends Document imp
     @Override
     public boolean remove(Object o) {
         if (data.remove(o)) {
-            bindDocument(null, o);
+            bindDocument(null, o, -1);
             return true;
         }
         return false;
@@ -39,7 +39,7 @@ public class ArrayDocument<DATA extends ResourceIdentifier> extends Document imp
     @Override
     public boolean addAll(Collection<? extends DATA> c) {
         if (data.addAll(c)) {
-            bindDocument(this, c);
+            bindDocument(this, c, -1);
             return true;
         }
         return false;
@@ -48,7 +48,7 @@ public class ArrayDocument<DATA extends ResourceIdentifier> extends Document imp
     @Override
     public boolean addAll(int index, Collection<? extends DATA> c) {
         if (data.addAll(index, c)) {
-            bindDocument(this, c);
+            bindDocument(this, c, -1);
             return true;
         }
         return false;
@@ -57,7 +57,7 @@ public class ArrayDocument<DATA extends ResourceIdentifier> extends Document imp
     @Override
     public boolean removeAll(Collection<?> c) {
         if (data.removeAll(c)) {
-            bindDocument(null, c);
+            bindDocument(null, c, -1);
             return true;
         }
         return false;
@@ -65,15 +65,15 @@ public class ArrayDocument<DATA extends ResourceIdentifier> extends Document imp
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        bindDocument(null, data);
+        bindDocument(null, data, -1);
         boolean result = data.retainAll(c);
-        bindDocument(this, data);
+        bindDocument(this, data, -1);
         return result;
     }
 
     @Override
     public void clear() {
-        bindDocument(null, data);
+        bindDocument(null, data, -1);
         data.clear();
     }
 
@@ -84,20 +84,20 @@ public class ArrayDocument<DATA extends ResourceIdentifier> extends Document imp
     @Override
     public DATA set(int index, DATA element) {
         DATA oldElement = data.set(index, element);
-        bindDocument(null, oldElement);
-        bindDocument(this, element);
+        bindDocument(null, oldElement, -1);
+        bindDocument(this, element, -1);
         return oldElement;
     }
 
     @Override
     public void add(int index, DATA element) {
         data.add(index, element);
-        bindDocument(this, data);
+        bindDocument(this, data, -1);
     }
 
     public DATA remove(int position) {
         DATA element = data.remove(position);
-        bindDocument(null, element);
+        bindDocument(null, element, -1);
         return element;
     }
 
